@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                 contentAlignment = Alignment.Center
             ) {
                 Column(
-                    modifier = Modifier.width(min(400.dp, maxWidth)).padding(horizontal = 8.dp),
+                    modifier = Modifier.width(min(400.dp, maxWidth)).padding(horizontal = 10.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     val color = remember { mutableStateOf(Color.Magenta) }

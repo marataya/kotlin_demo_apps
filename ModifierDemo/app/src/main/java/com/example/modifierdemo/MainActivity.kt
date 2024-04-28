@@ -75,6 +75,7 @@ fun runOrderDemo() {
 }
 
 fun Modifier.drawYellowCross() = then(
+    
     object: DrawModifier {
         override fun ContentDrawScope.draw() {
             drawLine(

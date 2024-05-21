@@ -41,6 +41,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -140,11 +141,11 @@ private fun shareSoldDessertsInformation(intentContext: Context, dessertsSold: I
 @Composable
 private fun DessertClickerApp(desserts: List<Dessert>) {
 
-    var revenue by remember { mutableStateOf(0) }
-    var dessertsSold by remember { mutableStateOf(0) }
-    var currentDessertIndex by remember { mutableStateOf(0) }
-    var currentDessertPrice by remember { mutableStateOf(desserts[currentDessertIndex].price) }
-    var currentDessertImageId by remember { mutableStateOf(desserts[currentDessertIndex].imgId) }
+    var revenue by rememberSaveable { mutableStateOf(0) }
+    var dessertsSold by rememberSaveable { mutableStateOf(0) }
+    var currentDessertIndex by rememberSaveable { mutableStateOf(0) }
+    var currentDessertPrice by rememberSaveable { mutableStateOf(desserts[currentDessertIndex].price) }
+    var currentDessertImageId by rememberSaveable { mutableStateOf(desserts[currentDessertIndex].imgId) }
 
     Scaffold(
         topBar = {

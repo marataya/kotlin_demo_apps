@@ -25,8 +25,19 @@ class MainActivity : AppCompatActivity() {
             Log.v("MainActivity", "Button clicked")
             val beerColor = findViewById<Spinner>(R.id.beer_color)
             val color = beerColor.selectedItem.toString()
+            val beerList = getBeers(color.toString())
+            val beers = beerList.reduce { str, item -> str + '\n' + item }
             val brands = findViewById<TextView>(R.id.brands)
-            brands.text = "Beer color is $color"
+            brands.text = beers.toString()
+        }
+    }
+
+    fun getBeers(color: String): List<String> {
+        return when (color) {
+            "Light" -> listOf("Jail Pale Ale", "Lager Lite")
+            "Amber" -> listOf("Jack Amber", "Red Moose")
+            "Brown" -> listOf("Brown Beer Beer", "Bock Brownie")
+            else -> listOf("Gout Stout", "Darky Daniel")
         }
     }
 }

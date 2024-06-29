@@ -1,7 +1,6 @@
 package com.example.stopwatch
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.os.SystemClock
 import android.util.Log
 import android.widget.Button
@@ -55,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         val pauseButton = findViewById<Button>(R.id.pause_button)
         pauseButton.setOnClickListener {
             if (running) {
-                setOffset()
+                saveOffset()
                 stopwatch.stop()
                 running = false
             }
@@ -66,6 +65,25 @@ class MainActivity : AppCompatActivity() {
             setBaseTime()
         }
 
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        if (running) {
+            setBaseTime()
+            stopwatch.start()
+            running = true
+            offset = 0
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (running) {
+            saveOffset()
+            stopwatch.stop()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -84,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         stopwatch.base = SystemClock.elapsedRealtime() - offset
     }
 
-    private fun setOffset() {
+    private fun saveOffset() {
         offset = SystemClock.elapsedRealtime() - stopwatch.base
     }
 

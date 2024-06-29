@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
+import androidx.navigation.fragment.findNavController
+import com.example.secretmessageapp.MessageFragmentDirections
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,6 +40,13 @@ class MessageFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_message, container, false)
         val nextButton = view.findViewById<Button>(R.id.next)
+        val messageView = view.findViewById<EditText>(R.id.message)
+        nextButton.setOnClickListener {
+            val message = messageView.text.toString()
+            val action = MessageFragmentDirections.actionMessageFragmentToEncryptFragment(message)
+            // Navigate to the encrypt fragment
+            findNavController().navigate(action)
+        }
         return view
     }
 

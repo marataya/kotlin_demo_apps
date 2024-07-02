@@ -12,6 +12,8 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.example.bitsandpizzas.databinding.FragmentOrderBinding
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +26,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class OrderFragment : Fragment() {
-    // TODO: Rename and change types of parameters
+    private var _binding: FragmentOrderBinding? = null
+    private val binding get() = _binding!!
+
     private var param1: String? = null
     private var param2: String? = null
 
@@ -41,12 +45,14 @@ class OrderFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_order, container, false)
-        val toolbar = view.findViewById<MaterialToolbar>(R.id.toolbar)
-        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+//        val view = inflater.inflate(R.layout.fragment_order, container, false)
+        _binding = FragmentOrderBinding.inflate(inflater, container, false)
+        val view = binding.root
+//        val toolbar = view.findViewById<MaterialToolbar>(R.id.toolbar)
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
-        val fab = view.findViewById<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener {
+//        val fab = view.findViewById<FloatingActionButton>(R.id.fab)
+        binding.fab.setOnClickListener {
             val pizzaGroup = view.findViewById<RadioGroup>(R.id.pizza_group)
             val pizzaType = pizzaGroup.checkedRadioButtonId
             if (pizzaType == -1) {
@@ -57,15 +63,28 @@ class OrderFragment : Fragment() {
                   R.id.radio_diavolo -> "Diavolo pizza"
                   else -> "Funghi pizza"
                 })
-                val parmesan = view.findViewById<Chip>(R.id.parmesan)
-                text += if (parmesan.isChecked) ", extra parmesan" else ""
-                val chilioil = view.findViewById<Chip>(R.id.chili_oil)
-                text += if (chilioil.isChecked) ", extra chili oil" else ""
-                Snackbar.make(fab, text, Snackbar.LENGTH_LONG).show()
+//                val parmesan = view.findViewById<Chip>(R.id.parmesan)
+                text += if (binding.parmesan.isChecked) ", extra parmesan" else ""
+//                val chilioil = view.findViewById<Chip>(R.id.chili_oil)
+                text += if (binding.chiliOil.isChecked) ", extra chili oil" else ""
+                Snackbar.make(binding.fab, text, Snackbar.LENGTH_LONG)
+                    .setAction("Undo") {
+                        Toast.makeText(activity, "Undone", Toast.LENGTH_SHORT).show()
+                    }
+                    .show()
             }
         }
 
         return view
+    }
+
+    /**
+     * Override the onDestroyView() lifecycle method so that when the fragment can no longer
+     * access its views, _binding is set to null
+    * */
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

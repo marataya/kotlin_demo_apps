@@ -27,7 +27,7 @@ class GameFragment : Fragment() {
     var secretWordDisplay = ""
     var correctGuesses = ""
     var incorrectGuesses = ""
-    var triesLeft = 0
+    var triesLeft = 8
 
     private var param1: String? = null
     private var param2: String? = null
@@ -64,18 +64,6 @@ class GameFragment : Fragment() {
         return view
     }
 
-    private fun wonLostMessage(): String {
-        var message = ""
-        if (isWon()) message = "You won!"
-        else if (isLost()) message = "You lost!"
-        message += " The word was $secretWord."
-        return message
-    }
-
-    private fun isWon(): Boolean = secretWord.equals(secretWordDisplay, true)
-
-    private fun isLost(): Boolean = triesLeft <= 0
-
     /**
      * called every time the user makes a guess
      */
@@ -83,21 +71,12 @@ class GameFragment : Fragment() {
         if (guess.length == 1) {
             if (secretWord.contains(guess)) {
                 correctGuesses += guess
-                if (correctGuesses.length == secretWord.length) {
-                    correctGuesses += guess
-                    secretWordDisplay = deriveSecretWordDisplay()
-                }
+                secretWordDisplay = deriveSecretWordDisplay()
             } else {
                 incorrectGuesses += "$guess "
                 triesLeft--
             }
         }
-    }
-
-    private fun updateScreen() {
-        binding.word.text = secretWordDisplay
-        binding.tries.text = "You have $triesLeft guesses left"
-        binding.incorrectGuesses.text = "Incorrect guesses: $incorrectGuesses"
     }
 
     /**
@@ -114,6 +93,24 @@ class GameFragment : Fragment() {
     private fun checkLetter(str: String) = when(correctGuesses.contains(str)) {
         true -> str
         false -> "_"
+    }
+
+    private fun isWon(): Boolean = secretWord.equals(secretWordDisplay, true)
+
+    private fun isLost(): Boolean = triesLeft <= 0
+
+    private fun wonLostMessage(): String {
+        var message = ""
+        if (isWon()) message = "You won!"
+        else if (isLost()) message = "You lost!"
+        message += " The word was $secretWord."
+        return message
+    }
+
+    private fun updateScreen() {
+        binding.word.text = secretWordDisplay
+        binding.tries.text = "You have $triesLeft guesses left"
+        binding.incorrectGuesses.text = "Incorrect guesses: $incorrectGuesses"
     }
 
     override fun onDestroyView() {

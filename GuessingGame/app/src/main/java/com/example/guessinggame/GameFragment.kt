@@ -1,10 +1,10 @@
 package com.example.guessinggame
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.guessinggame.databinding.FragmentGameBinding
@@ -48,12 +48,22 @@ class GameFragment : Fragment() {
 
         viewModel = ViewModelProvider(this)[GameViewModel::class.java]
 
-        updateScreen()
+//        updateScreen()
+        viewModel.triesLeft.observe(viewLifecycleOwner) { newValue ->
+            "You have $newValue guesses left".also { binding.tries.text = it }
+        }
+
+        viewModel.incorrectGuesses.observe(viewLifecycleOwner) { newValue ->
+            "Incorrect guesses: $newValue".also { binding.incorrectGuesses.text = it }
+        }
+        viewModel.secretWordDisplay.observe(viewLifecycleOwner) { newValue ->
+            "$newValue".also { binding.word.teaxt = it }
+        }
 
         binding.guessButton.setOnClickListener {
             viewModel.makeGuess(binding.guess.text.toString().uppercase())
             binding.guess.text = null
-            updateScreen()
+//            updateScreen()
             if (viewModel.isWon() || viewModel.isLost()) {
                 val action = GameFragmentDirections.actionGameFragmentToResultFragment(viewModel.wonLostMessage())
                 view.findNavController().navigate(action)
@@ -67,11 +77,13 @@ class GameFragment : Fragment() {
      * called every time the user makes a guess
      */
 
+/*
     private fun updateScreen() {
         binding.word.text = viewModel.secretWordDisplay
         "You have ${viewModel.triesLeft} guesses left".also { binding.tries.text = it }
         "Incorrect guesses: ${viewModel.incorrectGuesses}".also { binding.incorrectGuesses.text = it }
     }
+*/
 
     override fun onDestroyView() {
         super.onDestroyView()

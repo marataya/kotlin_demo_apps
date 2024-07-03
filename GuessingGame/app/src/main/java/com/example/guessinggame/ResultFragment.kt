@@ -20,8 +20,8 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ResultFragment : Fragment() {
-    lateinit var viewModel: ResultViewModel
-    lateinit var viewModelFactory: ResultViewModelFactory
+    private lateinit var viewModel: ResultViewModel
+    private lateinit var viewModelFactory: ResultViewModelFactory
 
     private var _binding: FragmentResultBinding? = null
     private val binding get() = _binding!!
@@ -40,15 +40,14 @@ class ResultFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         _binding = FragmentResultBinding.inflate(inflater, container, false)
         val view = binding.root
 
 //        binding.wonLost.text = ResultFragmentArgs.fromBundle(requireArguments()).result
         val result = ResultFragmentArgs.fromBundle(requireArguments()).result
         viewModelFactory = ResultViewModelFactory(result)
-        viewModel = ViewModelProvider(this, viewModelFactory)
-            .get(ResultViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)[ResultViewModel::class.java]
 
         binding.wonLost.text = viewModel.result
         binding.newGameButton.setOnClickListener {

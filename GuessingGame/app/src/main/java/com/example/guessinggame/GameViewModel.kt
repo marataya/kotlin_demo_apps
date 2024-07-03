@@ -18,6 +18,11 @@ class GameViewModel : ViewModel() {
     private val _triesLeft = MutableLiveData<Int>(8)
     val triesLeft: LiveData<Int>
         get() = _triesLeft
+    private val _gameOver = MutableLiveData<Boolean>(false)
+    val gameOver: LiveData<Boolean>
+        get() = _gameOver
+
+
     init {
         _secretWordDisplay.value = deriveSecretWordDisplay()
     }
@@ -32,6 +37,7 @@ class GameViewModel : ViewModel() {
                 _triesLeft.value = triesLeft.value?.minus(1)
             }
         }
+        if (isWon() || isLost()) _gameOver.value = true
     }
 
     /**

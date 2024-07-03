@@ -60,14 +60,21 @@ class GameFragment : Fragment() {
             "$newValue".also { binding.word.text = it }
         }
 
+        viewModel.gameOver.observe(viewLifecycleOwner) { newValue ->
+            if (newValue) {
+                val action = GameFragmentDirections.actionGameFragmentToResultFragment(viewModel.wonLostMessage())
+                view.findNavController().navigate(action)
+            }
+        }
+
         binding.guessButton.setOnClickListener {
             viewModel.makeGuess(binding.guess.text.toString().uppercase())
             binding.guess.text = null
 //            updateScreen()
-            if (viewModel.isWon() || viewModel.isLost()) {
+/*            if (viewModel.isWon() || viewModel.isLost()) {
                 val action = GameFragmentDirections.actionGameFragmentToResultFragment(viewModel.wonLostMessage())
                 view.findNavController().navigate(action)
-            }
+            }*/
         }
 
         return view

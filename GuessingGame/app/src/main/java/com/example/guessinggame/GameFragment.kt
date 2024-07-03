@@ -57,7 +57,7 @@ class GameFragment : Fragment() {
             "Incorrect guesses: $newValue".also { binding.incorrectGuesses.text = it }
         }
         viewModel.secretWordDisplay.observe(viewLifecycleOwner) { newValue ->
-            "$newValue".also { binding.word.teaxt = it }
+            "$newValue".also { binding.word.text = it }
         }
 
         binding.guessButton.setOnClickListener {

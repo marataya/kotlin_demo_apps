@@ -41,10 +41,6 @@ android {
 }
 
 dependencies {
-    val nav_version = "2.7.7"
-
-    val lifecycle_version = "2.8.3"
-    val arch_version = "2.2.0"
 
     // ViewModel
     implementation(libs.androidx.lifecycle.viewmodel.ktx)

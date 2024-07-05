@@ -2,5 +2,7 @@
     <string name="app_name">GuessingGame</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="word_placeholder">Hello</string>
+    <string name="tries_left">You have %d tries left</string>
+    <string name="incorrect_guesses">Incorrect guesses: %s</string>
     <string name="edit_text_hint">Guess a letter</string>
 </resources>

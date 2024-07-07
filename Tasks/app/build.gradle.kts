@@ -43,6 +43,9 @@ android {
 }
 
 dependencies {
+    //CardView
+    implementation(libs.androidx.cardview)
+
     //RecyclerView
     implementation(libs.androidx.recyclerview)
     // For control over item selection of both touch and mouse driven selection

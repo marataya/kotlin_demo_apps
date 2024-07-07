@@ -2,8 +2,9 @@ package com.example.tasks
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
-import androidx.databinding.BindingAdapter
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 
 class TaskItemAdapter : RecyclerView.Adapter<TaskItemAdapter.TaskItemViewHolder>() {
@@ -18,23 +19,25 @@ class TaskItemAdapter : RecyclerView.Adapter<TaskItemAdapter.TaskItemViewHolder>
     override fun onBindViewHolder(holder: TaskItemViewHolder, position: Int) {
         val item = data[position]
         holder.bind(item)
-
     }
 
     override fun getItemCount(): Int = data.size
 
-    class TaskItemViewHolder(val rootView: TextView) : RecyclerView.ViewHolder(rootView) {
+    class TaskItemViewHolder(val rootView: CardView) : RecyclerView.ViewHolder(rootView) {
+        val taskNameView = rootView.findViewById<TextView>(R.id.task_name)
+        val taskDoneView = rootView.findViewById<CheckBox>(R.id.task_done)
+
         fun bind(item: Task) {
-            rootView.text = item.taskName
+            taskNameView.text = item.taskName
+            taskDoneView.isChecked = item.taskDone
         }
 
         companion object {
             fun inflateFrom(parent: ViewGroup) : TaskItemViewHolder {
                 val layoutInflator = LayoutInflater.from(parent.context)
-                val view = layoutInflator.inflate(R.layout.task_item, parent, false) as TextView
+                val view = layoutInflator.inflate(R.layout.task_item, parent, false) as CardView
                 return TaskItemViewHolder(view)
             }
         }
     }
 }
-

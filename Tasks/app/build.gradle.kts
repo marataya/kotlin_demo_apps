@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     //KAPT plugin
     id("kotlin-kapt")
+    //Safe Args
+    id("androidx.navigation.safeargs")
 }
 
 android {
@@ -43,6 +45,14 @@ android {
 }
 
 dependencies {
+    //Navigation
+    // Kotlin
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+
+
+
+
     //CardView
     implementation(libs.androidx.cardview)
 

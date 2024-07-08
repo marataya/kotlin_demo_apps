@@ -1,5 +1,7 @@
 package com.example.tasks
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.asLiveData
@@ -8,6 +10,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class TasksViewModel(val dao: TaskDao) : ViewModel() {
+    private val _navigateToTask = MutableLiveData<Long?>()
+    val navigateToTask: LiveData<Long?>
+        get() = _navigateToTask
     var newTaskName = ""
     val tasks = dao.getAll()
 //    var tasksString = tasks.asFlow().map {taskList ->
@@ -27,5 +32,13 @@ class TasksViewModel(val dao: TaskDao) : ViewModel() {
             task.taskName = newTaskName
             dao.insert(task)
         }
+    }
+
+    fun onTaskClicked(taskId: Long) {
+        _navigateToTask.value = taskId
+    }
+
+    fun onTaskNavigated() {
+        _navigateToTask.value = null
     }
 }

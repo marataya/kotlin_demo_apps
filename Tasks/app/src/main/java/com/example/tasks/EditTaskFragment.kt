@@ -1,11 +1,16 @@
 package com.example.tasks
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import com.example.tasks.databinding.FragmentEditTaskBinding
+import com.example.tasks.databinding.FragmentTasksBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,7 +23,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class EditTaskFragment : Fragment() {
-    // TODO: Rename and change types of parameters
+    private var _binding: FragmentEditTaskBinding? = null
+    private val binding get() = _binding!!
+
     private var param1: String? = null
     private var param2: String? = null
 
@@ -34,13 +41,32 @@ class EditTaskFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_edit_task, container, false)
-        val textView = view.findViewById<TextView>(R.id.task_id)
+        _binding = FragmentEditTaskBinding.inflate(inflater, container, false)
+        val view = binding.root
         val taskId = EditTaskFragmentArgs.fromBundle(requireArguments()).taskId
-        textView.text = taskId.toString()
 
+        Log.d("EditTask", "taskId = $taskId")
+
+        val application = requireNotNull(this.activity).application
+        val dao = TaskDatabase.getInstance(application).taskDao
+
+        val viewModelFactory = EditTaskViewModelFactory(taskId, dao)
+        val viewModel = ViewModelProvider(this, viewModelFactory)[EditTaskViewModel::class.java]
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        viewModel.navigateToList.observe(viewLifecycleOwner) { navigate ->
+            if (navigate) {
+                view.findNavController().navigate(R.id.action_editTaskFragment_to_tasksFragment)
+                viewModel.onNavigatedToList()
+            }
+        }
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
